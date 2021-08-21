@@ -16,6 +16,6 @@ If issues occur, run php artisan cache:clear to refresh
 10. Port into Controller by declaring "Route::resource('sermons', 'App\Http\Controllers\SermonController');" in api.php. 
     Check that it went through with the cli command: "php artisan route:list"
 11. Write code for the store,show,update,destroy commands in the SermonController (see file for code. import sermons with 'use App\Models\Sermon;' first)
-12. Open Insomnia and run a test http request for each of the controller actions. 
+12. Open Insomnia and run a test http request for each of the controller actions. (use JSON data for update method to prevent conflicts)
     declare the header/value as "content-type" "application/json" respectively, then "Accept"/application/json (be sure to php artisan serve first to access the application)
 13. To ensure 'number' is an in. declare a protected array in the Sermon.php. and declared 'number' => 'integer'.
