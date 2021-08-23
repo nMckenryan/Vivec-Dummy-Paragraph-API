@@ -19,3 +19,8 @@ If issues occur, run php artisan cache:clear to refresh
 12. Open Insomnia and run a test http request for each of the controller actions. (use JSON data for update method to prevent conflicts)
     declare the header/value as "content-type" "application/json" respectively, then "Accept"/application/json (be sure to php artisan serve first to access the application)
 13. To ensure 'number' is an in. declare a protected array in the Sermon.php. and declared 'number' => 'integer'.
+    
+    POPULATING THE DATABASE: 
+1. Compiled JSON file with Vivec quotes in 
+2. Follow tutorial to build seeder file (https://medium.com/@kolawrites/seed-me-some-json-data-how-laravel-makes-everything-a-piece-of-cake-b249ff81ecdc)
+3. Run seeder with php artisan db:seed
