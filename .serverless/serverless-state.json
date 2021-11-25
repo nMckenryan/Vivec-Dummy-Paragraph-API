@@ -1,8 +1,8 @@
 {
   "service": {
-    "service": "laravel",
+    "service": "app",
     "serviceObject": {
-      "name": "laravel"
+      "name": "app"
     },
     "provider": {
       "name": "aws",
@@ -83,16 +83,10 @@
               }
             }
           },
-          "WebLogGroup": {
+          "ApiLogGroup": {
             "Type": "AWS::Logs::LogGroup",
             "Properties": {
-              "LogGroupName": "/aws/lambda/laravel-dev-web"
-            }
-          },
-          "ArtisanLogGroup": {
-            "Type": "AWS::Logs::LogGroup",
-            "Properties": {
-              "LogGroupName": "/aws/lambda/laravel-dev-artisan"
+              "LogGroupName": "/aws/lambda/app-dev-api"
             }
           },
           "IamRoleLambdaExecution": {
@@ -120,7 +114,7 @@
                     "Fn::Join": [
                       "-",
                       [
-                        "laravel",
+                        "app",
                         "dev",
                         "lambda"
                       ]
@@ -137,7 +131,7 @@
                         ],
                         "Resource": [
                           {
-                            "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/laravel-dev*:*"
+                            "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/app-dev*:*"
                           }
                         ]
                       },
@@ -148,7 +142,7 @@
                         ],
                         "Resource": [
                           {
-                            "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/laravel-dev*:*:*"
+                            "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/app-dev*:*:*"
                           }
                         ]
                       }
@@ -161,7 +155,7 @@
                 "Fn::Join": [
                   "-",
                   [
-                    "laravel",
+                    "app",
                     "dev",
                     {
                       "Ref": "AWS::Region"
@@ -172,20 +166,21 @@
               }
             }
           },
-          "WebLambdaFunction": {
+          "ApiLambdaFunction": {
             "Type": "AWS::Lambda::Function",
             "Properties": {
               "Code": {
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/laravel/dev/1630313929232-2021-08-30T08:58:49.232Z/laravel.zip"
+                "S3Key": "serverless/app/dev/1637807665702-2021-11-25T02:34:25.702Z/app.zip"
               },
               "Handler": "public/index.php",
               "Runtime": "provided.al2",
-              "FunctionName": "laravel-dev-web",
+              "FunctionName": "app-dev-api",
               "MemorySize": 1024,
               "Timeout": 28,
+              "Description": "Vivec Dummy Generator",
               "Role": {
                 "Fn::GetAtt": [
                   "IamRoleLambdaExecution",
@@ -193,66 +188,28 @@
                 ]
               },
               "Layers": [
-                "arn:aws:lambda:ap-southeast-2:209497400698:layer:php-74-fpm:26"
+                "arn:aws:lambda:ap-southeast-2:209497400698:layer:php-80-fpm:28"
               ]
             },
             "DependsOn": [
-              "WebLogGroup"
+              "ApiLogGroup"
             ]
           },
-          "ArtisanLambdaFunction": {
-            "Type": "AWS::Lambda::Function",
-            "Properties": {
-              "Code": {
-                "S3Bucket": {
-                  "Ref": "ServerlessDeploymentBucket"
-                },
-                "S3Key": "serverless/laravel/dev/1630313929232-2021-08-30T08:58:49.232Z/laravel.zip"
-              },
-              "Handler": "artisan",
-              "Runtime": "provided.al2",
-              "FunctionName": "laravel-dev-artisan",
-              "MemorySize": 1024,
-              "Timeout": 120,
-              "Role": {
-                "Fn::GetAtt": [
-                  "IamRoleLambdaExecution",
-                  "Arn"
-                ]
-              },
-              "Layers": [
-                "arn:aws:lambda:ap-southeast-2:209497400698:layer:php-74:26",
-                "arn:aws:lambda:ap-southeast-2:209497400698:layer:console:41"
-              ]
-            },
-            "DependsOn": [
-              "ArtisanLogGroup"
-            ]
-          },
-          "WebLambdaVersionXDXlreUsJJ1zTkzW4Og03MQQ54BpIR69jl8nkJwmM": {
+          "ApiLambdaVersion7RSbhrDMUid997skfPmHMxuTvngjMNPCB62RAEoKo4": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
-                "Ref": "WebLambdaFunction"
+                "Ref": "ApiLambdaFunction"
               },
-              "CodeSha256": "sLRfL62+O/gSQLh2Zz/Lss0UHRRBzGejT90IRkFttL8="
-            }
-          },
-          "ArtisanLambdaVersionLcN15CSitRtCMDfFS1lyxzVW7uw7jvrYbEVuvJK8riI": {
-            "Type": "AWS::Lambda::Version",
-            "DeletionPolicy": "Retain",
-            "Properties": {
-              "FunctionName": {
-                "Ref": "ArtisanLambdaFunction"
-              },
-              "CodeSha256": "sLRfL62+O/gSQLh2Zz/Lss0UHRRBzGejT90IRkFttL8="
+              "CodeSha256": "tes1WDQDRk0gee4MyVTqO4eqwvtawumGPnazP2gRGdg=",
+              "Description": "Vivec Dummy Generator"
             }
           },
           "HttpApi": {
             "Type": "AWS::ApiGatewayV2::Api",
             "Properties": {
-              "Name": "dev-laravel",
+              "Name": "dev-app",
               "ProtocolType": "HTTP"
             }
           },
@@ -269,12 +226,12 @@
               }
             }
           },
-          "WebLambdaPermissionHttpApi": {
+          "ApiLambdaPermissionHttpApi": {
             "Type": "AWS::Lambda::Permission",
             "Properties": {
               "FunctionName": {
                 "Fn::GetAtt": [
-                  "WebLambdaFunction",
+                  "ApiLambdaFunction",
                   "Arn"
                 ]
               },
@@ -306,7 +263,7 @@
               }
             }
           },
-          "HttpApiIntegrationWeb": {
+          "HttpApiIntegrationApi": {
             "Type": "AWS::ApiGatewayV2::Integration",
             "Properties": {
               "ApiId": {
@@ -314,7 +271,7 @@
               },
               "IntegrationType": "AWS_PROXY",
               "IntegrationUri": {
-                "$ref": "$[\"service\"][\"provider\"][\"compiledCloudFormationTemplate\"][\"Resources\"][\"WebLambdaPermissionHttpApi\"][\"Properties\"][\"FunctionName\"]"
+                "$ref": "$[\"service\"][\"provider\"][\"compiledCloudFormationTemplate\"][\"Resources\"][\"ApiLambdaPermissionHttpApi\"][\"Properties\"][\"FunctionName\"]"
               },
               "PayloadFormatVersion": "2.0",
               "TimeoutInMillis": 28500
@@ -333,13 +290,13 @@
                   [
                     "integrations",
                     {
-                      "Ref": "HttpApiIntegrationWeb"
+                      "Ref": "HttpApiIntegrationApi"
                     }
                   ]
                 ]
               }
             },
-            "DependsOn": "HttpApiIntegrationWeb"
+            "DependsOn": "HttpApiIntegrationApi"
           }
         },
         "Outputs": {
@@ -348,25 +305,16 @@
               "Ref": "ServerlessDeploymentBucket"
             },
             "Export": {
-              "Name": "sls-laravel-dev-ServerlessDeploymentBucketName"
+              "Name": "sls-app-dev-ServerlessDeploymentBucketName"
             }
           },
-          "WebLambdaFunctionQualifiedArn": {
+          "ApiLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "WebLambdaVersionXDXlreUsJJ1zTkzW4Og03MQQ54BpIR69jl8nkJwmM"
+              "Ref": "ApiLambdaVersion7RSbhrDMUid997skfPmHMxuTvngjMNPCB62RAEoKo4"
             },
             "Export": {
-              "Name": "sls-laravel-dev-WebLambdaFunctionQualifiedArn"
-            }
-          },
-          "ArtisanLambdaFunctionQualifiedArn": {
-            "Description": "Current Lambda function version",
-            "Value": {
-              "Ref": "ArtisanLambdaVersionLcN15CSitRtCMDfFS1lyxzVW7uw7jvrYbEVuvJK8riI"
-            },
-            "Export": {
-              "Name": "sls-laravel-dev-ArtisanLambdaFunctionQualifiedArn"
+              "Name": "sls-app-dev-ApiLambdaFunctionQualifiedArn"
             }
           },
           "HttpApiId": {
@@ -375,7 +323,7 @@
               "Ref": "HttpApi"
             },
             "Export": {
-              "Name": "sls-laravel-dev-HttpApiId"
+              "Name": "sls-app-dev-HttpApiId"
             }
           },
           "HttpApiUrl": {
@@ -400,7 +348,7 @@
               ]
             },
             "Export": {
-              "Name": "sls-laravel-dev-HttpApiUrl"
+              "Name": "sls-app-dev-HttpApiUrl"
             }
           }
         }
@@ -497,11 +445,12 @@
     ],
     "pluginsData": {},
     "functions": {
-      "web": {
+      "api": {
         "handler": "public/index.php",
+        "description": "Vivec Dummy Generator",
         "timeout": 28,
         "layers": {
-          "$ref": "$[\"service\"][\"provider\"][\"compiledCloudFormationTemplate\"][\"Resources\"][\"WebLambdaFunction\"][\"Properties\"][\"Layers\"]"
+          "$ref": "$[\"service\"][\"provider\"][\"compiledCloudFormationTemplate\"][\"Resources\"][\"ApiLambdaFunction\"][\"Properties\"][\"Layers\"]"
         },
         "events": [
           {
@@ -509,26 +458,12 @@
             "resolvedMethod": "ANY"
           }
         ],
-        "name": "laravel-dev-web",
+        "name": "app-dev-api",
         "package": {},
         "memory": 1024,
         "runtime": "provided.al2",
         "vpc": {},
-        "versionLogicalId": "WebLambdaVersionXDXlreUsJJ1zTkzW4Og03MQQ54BpIR69jl8nkJwmM"
-      },
-      "artisan": {
-        "handler": "artisan",
-        "timeout": 120,
-        "layers": {
-          "$ref": "$[\"service\"][\"provider\"][\"compiledCloudFormationTemplate\"][\"Resources\"][\"ArtisanLambdaFunction\"][\"Properties\"][\"Layers\"]"
-        },
-        "events": [],
-        "name": "laravel-dev-artisan",
-        "package": {},
-        "memory": 1024,
-        "runtime": "provided.al2",
-        "vpc": {},
-        "versionLogicalId": "ArtisanLambdaVersionLcN15CSitRtCMDfFS1lyxzVW7uw7jvrYbEVuvJK8riI"
+        "versionLogicalId": "ApiLambdaVersion7RSbhrDMUid997skfPmHMxuTvngjMNPCB62RAEoKo4"
       }
     },
     "configValidationMode": "warn",
@@ -540,30 +475,27 @@
       "provider": {
         "$ref": "$[\"service\"][\"provider\"]"
       },
-      "package": {
-        "exclude": [
-          "node_modules/**",
-          "public/storage",
-          "resources/assets/**",
-          "storage/**",
-          "tests/**"
-        ],
-        "artifact": "C:\\Users\\User\\Documents\\GitHub\\vivec-sermon-dummy-data\\.serverless\\laravel.zip",
-        "artifactDirectoryName": "serverless/laravel/dev/1630313929232-2021-08-30T08:58:49.232Z"
+      "plugins": {
+        "$ref": "$[\"service\"][\"plugins\"]"
       },
       "functions": {
         "$ref": "$[\"service\"][\"functions\"]"
       },
-      "plugins": {
-        "$ref": "$[\"service\"][\"plugins\"]"
+      "package": {
+        "patterns": [
+          "!node_modules/**",
+          "!tests/**"
+        ],
+        "artifact": "C:\\Users\\User\\Documents\\GitHub\\vivec-sermon-dummy-data\\.serverless\\app.zip",
+        "artifactDirectoryName": "serverless/app/dev/1637807665702-2021-11-25T02:34:25.702Z"
       }
     },
     "layers": {},
     "isDashboardMonitoringPreconfigured": false,
-    "artifact": "C:\\Users\\User\\Documents\\GitHub\\vivec-sermon-dummy-data\\.serverless\\laravel.zip"
+    "artifact": "C:\\Users\\User\\Documents\\GitHub\\vivec-sermon-dummy-data\\.serverless\\app.zip"
   },
   "package": {
-    "artifactDirectoryName": "serverless/laravel/dev/1630313929232-2021-08-30T08:58:49.232Z",
-    "artifact": "laravel.zip"
+    "artifactDirectoryName": "serverless/app/dev/1637807665702-2021-11-25T02:34:25.702Z",
+    "artifact": "app.zip"
   }
 }

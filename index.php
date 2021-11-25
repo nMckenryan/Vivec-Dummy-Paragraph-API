@@ -10,7 +10,7 @@
 <html lang="en">
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Welcome!</title>
+    <title>Welcome to Vivec!</title>
     <link href="https://fonts.googleapis.com/css?family=Dosis:300&display=swap" rel="stylesheet">
     <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet">
 </head>
